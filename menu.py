@@ -25,12 +25,12 @@ TOOLS = {
     ],
     "Firewall & Access Control": [
         ("ufw",            "ufw status verbose"),
-        ("fail2ban-client","fail2ban-client status"),
+        ("fail2ban-client", "fail2ban-client status"),
         ("aa-status",      "aa-status"),
         ("sestatus",       "sestatus"),
     ],
     "Antivirus": [
-        ("clamscan",       "clamscan -r / --exclude-dir=/sys --exclude-dir=/proc --exclude-dir=/dev"),
+        ("clamscan", "clamscan -r / --exclude-dir=/sys --exclude-dir=/proc --exclude-dir=/dev"),
     ],
     "Web & Vulnerability Scanning": [
         ("nikto",          "nikto -h localhost"),
@@ -48,7 +48,7 @@ TOOLS = {
     ],
 }
 
-# Flatten to indexed list for menu display
+
 def build_menu():
     items = []
     for category, tools in TOOLS.items():

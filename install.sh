@@ -93,8 +93,6 @@ install_zeek() {
     log "Installing zeek..."
     # Add Zeek official repo
     if ! grep -r "download.opensuse.org/repositories/security:/zeek" /etc/apt/ >/dev/null 2>&1; then
-        DISTRO=$(. /etc/os-release && echo "$ID")
-        CODENAME=$(. /etc/os-release && echo "$VERSION_CODENAME")
         install_pkg curl
         install_pkg gnupg
         curl -sL "https://download.opensuse.org/repositories/security:/zeek/xUbuntu_22.04/Release.key" \
