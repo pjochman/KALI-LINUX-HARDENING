@@ -11,9 +11,15 @@ A collection of scripts to install and run common Linux security auditing tools.
 - **debsums** — verifies MD5 checksums of installed Debian packages
 - **unhide** — detects hidden processes and ports
 - **tripwire** — file integrity monitoring
+- **aide** — advanced intrusion detection environment; file integrity checker
+
+### Firewall & Intrusion Prevention
+- **ufw** — uncomplicated firewall; manages iptables rules
+- **fail2ban** — bans IPs with too many failed authentication attempts
 
 ### System Auditing & Maintenance
 - **lynis** — in-depth security auditing and hardening tool for Unix-based systems
+- **auditd** — Linux audit daemon; records security-relevant system events
 - **needrestart** — identifies daemons that need restarting after library upgrades
 - **logwatch** — log analysis and reporting
 
@@ -64,6 +70,9 @@ Installs all tools. apt packages are installed via apt; nuclei, grype, and trivy
 > - OpenVAS/GVM requires additional setup: run `gvm-setup` after installation.
 > - Snort and Suricata run as daemons; configure rules before enabling.
 > - Tripwire requires initialisation: run `tripwire --init` after installation.
+> - AIDE requires initialisation: run `aide --init` and move the generated database before first check.
+> - auditd runs as a daemon; configure rules in `/etc/audit/rules.d/`.
+> - fail2ban runs as a daemon; configure jails in `/etc/fail2ban/jail.local`.
 
 ### 2. Run a full security scan
 
@@ -81,7 +90,11 @@ scan-results/
   debcheckroot_<timestamp>.log
   debsums_<timestamp>.log
   tripwire_<timestamp>.log
+  aide_<timestamp>.log
   lynis_<timestamp>.log
+  aureport_<timestamp>.log
+  ufw_<timestamp>.log
+  fail2ban-client_<timestamp>.log
   needrestart_<timestamp>.log
   logwatch_<timestamp>.log
   clamscan_<timestamp>.log

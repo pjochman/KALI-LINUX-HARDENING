@@ -50,9 +50,15 @@ install_pkg unhide
 
 # File integrity monitoring
 install_pkg tripwire
+install_pkg aide
+
+# Firewall & intrusion prevention
+install_pkg ufw
+install_pkg fail2ban
 
 # System auditing & maintenance
 install_pkg lynis
+install_pkg auditd
 install_pkg needrestart
 install_pkg logwatch
 

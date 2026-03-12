@@ -35,9 +35,13 @@ run_tool "debcheckroot"  "debcheckroot"
 # Package & file integrity
 run_tool "debsums"       "debsums -c"
 run_tool "tripwire"      "tripwire --check"
+run_tool "aide"          "aide --check"
 
 # System audit & maintenance
 run_tool "lynis"         "lynis audit system --no-colors"
+run_tool "aureport"      "aureport --summary"
+run_tool "ufw"           "ufw status verbose"
+run_tool "fail2ban-client" "fail2ban-client status"
 run_tool "needrestart"   "needrestart -b"
 run_tool "logwatch"      "logwatch --output stdout --format text --range today"
 
