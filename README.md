@@ -17,6 +17,9 @@ A collection of scripts to install and run common Linux security auditing tools.
 - **ufw** — uncomplicated firewall; manages iptables rules
 - **fail2ban** — bans IPs with too many failed authentication attempts
 
+### USB Control
+- **usbguard** — enforces USB device authorisation policies
+
 ### Mandatory Access Control
 - **apparmor** — confines programs to a limited set of resources via profiles
 - **selinux** — label-based mandatory access control (mutually exclusive with AppArmor)
@@ -91,6 +94,8 @@ Applies the following hardening:
 - **SELinux** — activates SELinux (requires reboot; mutually exclusive with AppArmor)
 - **Password policy** — enforces 14-char minimum, complexity requirements, 90-day expiry, and account lockout after 5 failed attempts via PAM + pwquality
 - **SSH hardening** — disables root login and password auth, restricts ciphers/MACs/KEX to modern algorithms, sets idle timeout, and writes a login banner
+- **Kernel module hardening** — blacklists uncommon filesystems, network protocols, Bluetooth, FireWire, and Thunderbolt via `/etc/modprobe.d/99-hardening.conf`
+- **USB restrictions** — disables USB storage via modprobe blacklist; configures USBGuard to whitelist only currently connected devices
 
 ### 3. Run a full security scan
 

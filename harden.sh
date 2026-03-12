@@ -294,4 +294,101 @@ EOF
     fi
 fi
 
+#######################################################################
+# Kernel module hardening
+#######################################################################
+
+log "Applying kernel module hardening..."
+
+MODULES_CONF="/etc/modprobe.d/99-hardening.conf"
+
+cat > "$MODULES_CONF" << 'EOF'
+# Disable uncommon filesystems
+install cramfs /bin/true
+install freevxfs /bin/true
+install hfs /bin/true
+install hfsplus /bin/true
+install jffs2 /bin/true
+install squashfs /bin/true
+install udf /bin/true
+
+# Disable uncommon network protocols
+install dccp /bin/true
+install sctp /bin/true
+install rds /bin/true
+install tipc /bin/true
+install n-hdlc /bin/true
+install ax25 /bin/true
+install netrom /bin/true
+install x25 /bin/true
+install rose /bin/true
+install decnet /bin/true
+install econet /bin/true
+install af_802154 /bin/true
+install ipx /bin/true
+install appletalk /bin/true
+install psnap /bin/true
+install p8023 /bin/true
+install p8022 /bin/true
+install can /bin/true
+install atm /bin/true
+
+# Disable Bluetooth
+install bluetooth /bin/true
+install btusb /bin/true
+
+# Disable FireWire (DMA-based attack surface)
+install firewire-core /bin/true
+install firewire-ohci /bin/true
+install firewire-sbp2 /bin/true
+
+# Disable Thunderbolt (DMA attacks)
+install thunderbolt /bin/true
+EOF
+
+ok "Kernel module restrictions written to $MODULES_CONF."
+
+# Rebuild initramfs to apply module blacklist at boot
+if command -v update-initramfs >/dev/null 2>&1; then
+    update-initramfs -u >/dev/null 2>&1 && ok "initramfs updated." || warn "initramfs update failed."
+fi
+
+#######################################################################
+# USB restrictions
+#######################################################################
+
+log "Applying USB restrictions..."
+
+USB_CONF="/etc/modprobe.d/99-usb-hardening.conf"
+
+cat > "$USB_CONF" << 'EOF'
+# Disable USB storage (block mass storage devices)
+install usb-storage /bin/true
+
+# Disable uncommon USB device classes
+install usbip-core /bin/true
+install usbip-host /bin/true
+EOF
+
+ok "USB storage disabled via $USB_CONF."
+
+# USBGuard — policy-based USB device authorisation
+if command -v usbguard >/dev/null 2>&1; then
+    if ! usbguard list-rules >/dev/null 2>&1; then
+        usbguard generate-policy > /etc/usbguard/rules.conf 2>/dev/null \
+            && ok "USBGuard policy generated from currently connected devices." \
+            || warn "Could not generate USBGuard policy."
+    else
+        ok "USBGuard policy already exists."
+    fi
+    systemctl enable --now usbguard 2>/dev/null && ok "USBGuard service enabled." || warn "Could not enable USBGuard."
+else
+    warn "usbguard not installed. Install it with: apt-get install -y usbguard"
+fi
+
+# Rebuild initramfs
+if command -v update-initramfs >/dev/null 2>&1; then
+    update-initramfs -u >/dev/null 2>&1 && ok "initramfs updated." || warn "initramfs update failed."
+fi
+
 log "Hardening complete."

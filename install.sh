@@ -56,6 +56,9 @@ install_pkg aide
 install_pkg ufw
 install_pkg fail2ban
 
+# USB control
+install_pkg usbguard
+
 # Mandatory access control
 install_pkg apparmor
 install_pkg apparmor-utils
