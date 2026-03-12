@@ -6,6 +6,15 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [2026-03-12] — continued (2)
+
+### Added
+- `.github/workflows/ci.yml` — GitHub Actions CI with three jobs: shellcheck, flake8, and syntax validation
+
+### Fixed
+- `menu.py` — flake8: missing whitespace after comma, line too long, missing blank lines
+- `install.sh` — shellcheck: removed unused `DISTRO` and `CODENAME` variables in `install_zeek`
+
 ## [2026-03-12] — continued
 
 ### Added
