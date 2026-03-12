@@ -1,0 +1,4 @@
+scan-results/
+*.log
+__pycache__/
+*.pyc
