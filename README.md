@@ -63,6 +63,14 @@ A collection of scripts to install and run common Linux security auditing tools.
 
 ## Usage
 
+### Interactive menu
+
+```sh
+sudo python3 menu.py
+```
+
+Launches an interactive terminal menu to run any tool individually, run all tools at once, or apply full hardening. Shows install status (`✓`/`✗`) for each tool. Output is saved to `scan-results/` automatically.
+
 ### 1. Install the tools
 
 ```sh
