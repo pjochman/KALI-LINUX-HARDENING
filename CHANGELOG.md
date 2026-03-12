@@ -6,6 +6,21 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [2026-03-12] — continued
+
+### Added
+- `SECURITY.md` — security policy with vulnerability reporting instructions and responsible disclosure process
+- `CODE_OF_CONDUCT.md` — contributor code of conduct with responsible use clause
+- `CONTRIBUTING.md` — contributing guidelines for adding tools, hardening rules, and code style
+- `LICENSE` — MIT license
+- `menu.py` — interactive Python terminal menu to run tools individually or all at once, with install status indicators
+
+### Fixed
+- `install.sh` — nuclei installation now resolves download URL via GitHub API
+- `install.sh` — volatility3 pip install now uses `--break-system-packages` for modern Debian/Kali
+- `install.sh` — zeek installed via official openSUSE security repo
+- `install.sh` — improved error handling and temp file cleanup across all install functions
+
 ## [2026-03-12]
 
 ### Added
