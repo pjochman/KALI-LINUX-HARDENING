@@ -27,26 +27,36 @@ run_tool() {
 }
 
 # Rootkit detection
-run_tool "rkhunter"   "rkhunter --check --skip-keypress --report-warnings-only"
-run_tool "chkrootkit" "chkrootkit"
-run_tool "unhide"     "unhide sys"
+run_tool "rkhunter"      "rkhunter --check --skip-keypress --report-warnings-only"
+run_tool "chkrootkit"    "chkrootkit"
+run_tool "unhide"        "unhide sys"
+run_tool "debcheckroot"  "debcheckroot"
 
-# Package integrity
-run_tool "debsums"    "debsums -c"
+# Package & file integrity
+run_tool "debsums"       "debsums -c"
+run_tool "tripwire"      "tripwire --check"
 
-# System audit
-run_tool "lynis"      "lynis audit system --no-colors"
+# System audit & maintenance
+run_tool "lynis"         "lynis audit system --no-colors"
+run_tool "needrestart"   "needrestart -b"
+run_tool "logwatch"      "logwatch --output stdout --format text --range today"
 
 # Antivirus
-run_tool "clamscan"   "clamscan -r / --exclude-dir=^/sys --exclude-dir=^/proc --exclude-dir=^/dev"
+run_tool "clamscan"      "clamscan -r / --exclude-dir=^/sys --exclude-dir=^/proc --exclude-dir=^/dev"
 
 # Web server scan (localhost)
-run_tool "nikto"      "nikto -h localhost"
+run_tool "nikto"         "nikto -h localhost"
 
-# Vulnerability scan (localhost, requires vulners NSE script)
-run_tool "nmap"       "nmap --script vulners -sV localhost"
+# Vulnerability scan (localhost)
+run_tool "nmap"          "nmap --script vulners -sV localhost"
+run_tool "nuclei"        "nuclei -u localhost -silent"
 
-# Hidden process detection
-run_tool "pslist"     "pslist"
+# Filesystem vulnerability scan
+run_tool "grype"         "grype /"
+run_tool "trivy"         "trivy fs /"
+
+# Network & process inspection
+run_tool "lsof"          "lsof -i"
+run_tool "pslist"        "pslist"
 
 log "Done. Results in $OUTDIR/"
