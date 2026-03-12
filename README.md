@@ -1,49 +1,37 @@
-# CLAUDE.md
+# Kali Linux Hardening
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+A collection of scripts to install and run common Linux security auditing tools.
 
-## What This Is
+## Tools
 
-**Lynis** is a shell-based security auditing and hardening tool for Unix/Linux systems. It requires no compilation — the main entry point is the `lynis` shell script.
+- **rkhunter** — rootkit hunter; scans for rootkits, backdoors, and local exploits
+- **chkrootkit** — checks for signs of rootkits on the local system
+- **lynis** — in-depth security auditing and hardening tool for Unix-based systems
 
-## Running Lynis
+## Usage
 
-```sh
-./lynis audit system                        # full system audit
-./lynis audit system --profile developer.prf  # debug/developer mode
-./lynis show help                           # show all commands
-```
-
-## Syntax Checking
+### 1. Install the tools
 
 ```sh
-sh -n lynis                        # check main script for syntax errors
-sh -n include/<file>               # check an include file
+sudo ./install.sh
 ```
 
-## Architecture
+Installs rkhunter, chkrootkit, and lynis via apt. Skips any tool already installed.
 
-- **`lynis`** — main executable shell script; handles CLI parsing and bootstraps the audit
-- **`include/`** — shell function libraries and test modules loaded at runtime:
-  - `tests_*` files contain the actual security checks (grouped by category: auth, crypto, filesystems, firewalls, etc.)
-  - `functions` — core shared functions (deleted in working tree; normally present)
-  - `helper_*` — subcommand handlers (configure, update, generate, etc.)
-  - `consts`, `binaries`, `osdetection`, `profiles`, `parameters` — setup/init includes
-- **`plugins/`** — optional plugin files (`plugin_*_phase1`) loaded during scan phases; custom plugins go here
-- **`db/`** — static data files (OS EOL dates, banners, etc.)
-- **`extras/`** — shell completion, build scripts, CI helpers
+### 2. Run a full security scan
 
-## Code Conventions
+```sh
+sudo ./scan.sh
+```
 
-- All code must be **POSIX sh** compatible (`/bin/sh`), not bash-specific
-- Indentation: **4 spaces** (no tabs)
-- Variables: `ALL_CAPS_WITH_UNDERSCORES`
-- Functions: `CamelCase` (to distinguish from shell builtins and external commands)
-- Comments: `# ` (hash + space); max one blank line between blocks
-- Profile customization goes in `custom.prf`, never in `default.prf`
+Runs all three tools and saves output to `scan-results/`:
 
-## Custom util Package
+```
+scan-results/
+  rkhunter_<timestamp>.log
+  chkrootkit_<timestamp>.log
+  lynis_<timestamp>.log
+  summary_<timestamp>.log      # lists paths to all output files
+```
 
-A `util/` Python package was added to this repo with:
-- `util/logging.py` — `get_logger(name, level, log_file, fmt, datefmt)` factory
-- `util/__init__.py` — makes it a package
+Any tool not found on the system is skipped automatically.
