@@ -56,6 +56,14 @@ install_pkg aide
 install_pkg ufw
 install_pkg fail2ban
 
+# Mandatory access control
+install_pkg apparmor
+install_pkg apparmor-utils
+install_pkg apparmor-profiles
+install_pkg apparmor-profiles-extra
+install_pkg selinux-basics
+install_pkg selinux-policy-default
+
 # System auditing & maintenance
 install_pkg lynis
 install_pkg auditd

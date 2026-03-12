@@ -17,6 +17,10 @@ A collection of scripts to install and run common Linux security auditing tools.
 - **ufw** — uncomplicated firewall; manages iptables rules
 - **fail2ban** — bans IPs with too many failed authentication attempts
 
+### Mandatory Access Control
+- **apparmor** — confines programs to a limited set of resources via profiles
+- **selinux** — label-based mandatory access control (mutually exclusive with AppArmor)
+
 ### System Auditing & Maintenance
 - **lynis** — in-depth security auditing and hardening tool for Unix-based systems
 - **auditd** — Linux audit daemon; records security-relevant system events
@@ -73,8 +77,20 @@ Installs all tools. apt packages are installed via apt; nuclei, grype, and trivy
 > - AIDE requires initialisation: run `aide --init` and move the generated database before first check.
 > - auditd runs as a daemon; configure rules in `/etc/audit/rules.d/`.
 > - fail2ban runs as a daemon; configure jails in `/etc/fail2ban/jail.local`.
+> - AppArmor and SELinux are mutually exclusive — choose one.
 
-### 2. Run a full security scan
+### 2. Apply system hardening
+
+```sh
+sudo ./harden.sh
+```
+
+Applies the following hardening:
+- **sysctl** — writes hardened kernel parameters to `/etc/sysctl.d/99-hardening.conf` covering network stack, ASLR, ptrace restrictions, BPF hardening, and filesystem protections
+- **AppArmor** — sets all installed profiles to enforce mode
+- **SELinux** — activates SELinux (requires reboot; mutually exclusive with AppArmor)
+
+### 3. Run a full security scan
 
 ```sh
 sudo ./scan.sh

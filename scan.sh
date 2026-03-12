@@ -42,6 +42,8 @@ run_tool "lynis"         "lynis audit system --no-colors"
 run_tool "aureport"      "aureport --summary"
 run_tool "ufw"           "ufw status verbose"
 run_tool "fail2ban-client" "fail2ban-client status"
+run_tool "aa-status"     "aa-status"
+run_tool "sestatus"      "sestatus"
 run_tool "needrestart"   "needrestart -b"
 run_tool "logwatch"      "logwatch --output stdout --format text --range today"
 
