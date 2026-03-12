@@ -89,6 +89,8 @@ Applies the following hardening:
 - **sysctl** — writes hardened kernel parameters to `/etc/sysctl.d/99-hardening.conf` covering network stack, ASLR, ptrace restrictions, BPF hardening, and filesystem protections
 - **AppArmor** — sets all installed profiles to enforce mode
 - **SELinux** — activates SELinux (requires reboot; mutually exclusive with AppArmor)
+- **Password policy** — enforces 14-char minimum, complexity requirements, 90-day expiry, and account lockout after 5 failed attempts via PAM + pwquality
+- **SSH hardening** — disables root login and password auth, restricts ciphers/MACs/KEX to modern algorithms, sets idle timeout, and writes a login banner
 
 ### 3. Run a full security scan
 
