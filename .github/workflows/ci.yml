@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  lint-shell:
+    name: Lint shell scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install shellcheck
+        run: sudo apt-get install -y shellcheck
+
+      - name: Run shellcheck
+        run: |
+          shellcheck -S warning install.sh
+          shellcheck -S warning scan.sh
+          shellcheck -S warning harden.sh
+
+  lint-python:
+    name: Lint Python
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install flake8
+        run: pip install flake8
+
+      - name: Run flake8
+        run: flake8 menu.py util/ --max-line-length=100
+
+  validate-syntax:
+    name: Validate script syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check shell script syntax
+        run: |
+          sh -n install.sh
+          sh -n scan.sh
+          sh -n harden.sh
+
+      - name: Check Python syntax
+        run: |
+          python3 -m py_compile menu.py
+          python3 -m py_compile util/logging.py
